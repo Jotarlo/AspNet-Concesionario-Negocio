@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="18145f9d324446d19577ab7c0bd887e2" Name="Diagram1" ZoomLevel="97">
+        <EntityTypeShape EntityType="ConcesionarioBDModel.tb_categoria" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConcesionarioBDModel.tb_cliente" Width="1.5" PointX="5" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConcesionarioBDModel.tb_fotos" Width="1.5" PointX="5.25" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConcesionarioBDModel.tb_marca" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConcesionarioBDModel.tb_proveedor" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConcesionarioBDModel.tb_usuario_vendedor" Width="1.5" PointX="5" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConcesionarioBDModel.tb_vehiculo" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConcesionarioBDModel.tb_vendedor" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
+        <AssociationConnector Association="ConcesionarioBDModel.FK__tb_vehicu__id_ca__1FCDBCEB" ManuallyRouted="false" />
+        <AssociationConnector Association="ConcesionarioBDModel.FK__tb_client__cread__1B0907CE" ManuallyRouted="false" />
+        <AssociationConnector Association="ConcesionarioBDModel.vendedor_editor_cliente_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="ConcesionarioBDModel.FK__tb_fotos__id_veh__239E4DCF" ManuallyRouted="false" />
+        <AssociationConnector Association="ConcesionarioBDModel.FK__tb_vehicu__id_ma__1ED998B2" ManuallyRouted="false" />
+        <AssociationConnector Association="ConcesionarioBDModel.FK__tb_vehicu__id_pr__20C1E124" ManuallyRouted="false" />
+        <AssociationConnector Association="ConcesionarioBDModel.FK__tb_usuari__id_ve__267ABA7A" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

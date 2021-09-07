@@ -1,0 +1,98 @@
+﻿@model Concesionario.GUI.ModeloBD.tb_vehiculo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tb_vehiculo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.color)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.color)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modelo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modelo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.serie_chasis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.serie_chasis)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.serie_motor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.serie_motor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.precio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.precio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.descuento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descuento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.estado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tb_categoria.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tb_categoria.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tb_marca.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tb_marca.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tb_proveedor.razon_social)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tb_proveedor.razon_social)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
