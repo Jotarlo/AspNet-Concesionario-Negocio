@@ -17,7 +17,10 @@ namespace Concesionario.GUI.Controllers.Parameters
         // GET: Marca
         public ActionResult Index()
         {
-            return View(db.tb_marca.ToList());
+            using (ConcesionarioBDEntities baseDeDatos = new ConcesionarioBDEntities())
+            {
+                return View(baseDeDatos.tb_marca.ToList());
+            }
         }
 
         // GET: Marca/Details/5
@@ -124,4 +127,5 @@ namespace Concesionario.GUI.Controllers.Parameters
             base.Dispose(disposing);
         }
     }
+
 }

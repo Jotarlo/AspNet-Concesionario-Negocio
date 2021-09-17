@@ -11,7 +11,9 @@ namespace Concesionario.GUI.ModeloBD
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
     public partial class tb_marca
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,7 +22,12 @@ namespace Concesionario.GUI.ModeloBD
             this.tb_vehiculo = new HashSet<tb_vehiculo>();
         }
     
+
         public int id { get; set; }
+
+        [DisplayName("Nombre de la Marca")]
+        [Required]
+        [MinLength(5)]
         public string nombre { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
