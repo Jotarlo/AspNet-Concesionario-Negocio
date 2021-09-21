@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Concesionario.GUI.ModeloBD;
+using AccesoDeDatos.ModeloDeDatos;
 
 namespace Concesionario.GUI.Controllers.Parameters
 {

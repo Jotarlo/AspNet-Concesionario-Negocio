@@ -6,21 +6,30 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Concesionario.GUI.ModeloBD;
+using AccesoDeDatos.Implementacion.Parametros;
+using AccesoDeDatos.ModeloDeDatos;
+using Concesionario.GUI.Models.Parametros;
 
 namespace Concesionario.GUI.Controllers.Parameters
 {
     public class MarcaController : Controller
     {
-        private ConcesionarioBDEntities db = new ConcesionarioBDEntities();
+        private ImplMarcaDatos acceso = new ImplMarcaDatos();
 
         // GET: Marca
-        public ActionResult Index()
+        public ActionResult Index(String filtro = "")
         {
-            using (ConcesionarioBDEntities baseDeDatos = new ConcesionarioBDEntities())
+            IEnumerable<tb_marca> listaDatos = acceso.ListarRegistros(String.Empty);
+            IList<ModeloMarcaGUI> listaGUI = new List<ModeloMarcaGUI>();
+            foreach (var item in listaDatos)
             {
-                return View(baseDeDatos.tb_marca.ToList());
+                listaGUI.Add(new ModeloMarcaGUI{
+                    Id = item.id,
+                    Nombre = item.nombre
+                });
             }
+
+            return View(listaGUI);
         }
 
         // GET: Marca/Details/5
@@ -30,7 +39,7 @@ namespace Concesionario.GUI.Controllers.Parameters
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_marca tb_marca = db.tb_marca.Find(id);
+            tb_marca tb_marca = acceso.BuscarRegistro(id.Value);
             if (tb_marca == null)
             {
                 return HttpNotFound();
@@ -53,8 +62,7 @@ namespace Concesionario.GUI.Controllers.Parameters
         {
             if (ModelState.IsValid)
             {
-                db.tb_marca.Add(tb_marca);
-                db.SaveChanges();
+                acceso.GuardarRegistro(tb_marca);
                 return RedirectToAction("Index");
             }
 
@@ -68,7 +76,7 @@ namespace Concesionario.GUI.Controllers.Parameters
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_marca tb_marca = db.tb_marca.Find(id);
+            tb_marca tb_marca = acceso.BuscarRegistro(id.Value);
             if (tb_marca == null)
             {
                 return HttpNotFound();
@@ -85,8 +93,7 @@ namespace Concesionario.GUI.Controllers.Parameters
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tb_marca).State = EntityState.Modified;
-                db.SaveChanges();
+                acceso.EditarRegistro(tb_marca);
                 return RedirectToAction("Index");
             }
             return View(tb_marca);
@@ -99,7 +106,7 @@ namespace Concesionario.GUI.Controllers.Parameters
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_marca tb_marca = db.tb_marca.Find(id);
+            tb_marca tb_marca = acceso.BuscarRegistro(id.Value);
             if (tb_marca == null)
             {
                 return HttpNotFound();
@@ -112,19 +119,8 @@ namespace Concesionario.GUI.Controllers.Parameters
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            tb_marca tb_marca = db.tb_marca.Find(id);
-            db.tb_marca.Remove(tb_marca);
-            db.SaveChanges();
+            acceso.EliminarRegistro(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 

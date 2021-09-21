@@ -136,45 +136,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="ModeloBD\ConcesionarioModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ConcesionarioModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ModeloBD\ConcesionarioModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ConcesionarioModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ModeloBD\ConcesionarioModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ConcesionarioModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="ModeloBD\tb_categoria.cs">
-      <DependentUpon>ConcesionarioModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ModeloBD\tb_cliente.cs">
-      <DependentUpon>ConcesionarioModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ModeloBD\tb_fotos.cs">
-      <DependentUpon>ConcesionarioModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ModeloBD\tb_marca.cs">
-      <DependentUpon>ConcesionarioModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ModeloBD\tb_proveedor.cs">
-      <DependentUpon>ConcesionarioModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ModeloBD\tb_usuario_vendedor.cs">
-      <DependentUpon>ConcesionarioModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ModeloBD\tb_vehiculo.cs">
-      <DependentUpon>ConcesionarioModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ModeloBD\tb_vendedor.cs">
-      <DependentUpon>ConcesionarioModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Mapeadores\MapeadorBaseGUI.cs" />
+    <Compile Include="Mapeadores\Parametros\MapeadorMarcaGUI.cs" />
+    <Compile Include="Models\Parametros\ModeloCategoriaGUI.cs" />
+    <Compile Include="Models\Parametros\ModeloMarcaGUI.cs" />
+    <Compile Include="Models\Parametros\ModeloProveedorGUI.cs" />
+    <Compile Include="Models\Vehiculo\ModeloVehiculoGUI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -190,25 +157,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="ModeloBD\ConcesionarioModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ConcesionarioModel.Context.cs</LastGenOutput>
-      <DependentUpon>ConcesionarioModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="ModeloBD\ConcesionarioModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ConcesionarioModel.edmx</DependentUpon>
-      <LastGenOutput>ConcesionarioModel.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="ModeloBD\ConcesionarioModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ConcesionarioModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="ModeloBD\ConcesionarioModel.edmx.diagram">
-      <DependentUpon>ConcesionarioModel.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\materialize\font\roboto\Roboto-Thin.woff2" />
     <Content Include="Content\materialize\font\roboto\Roboto-Thin.woff" />
     <Content Include="Content\materialize\font\roboto\Roboto-Thin.ttf" />
@@ -303,7 +253,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+    <Folder Include="Models\Vendedor\" />
+    <Folder Include="Models\Ventas\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -320,6 +271,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AccesoDeDatos\AccesoDeDatos.csproj">
+      <Project>{eb41d4eb-da9b-440b-b38c-e605db2cff69}</Project>
+      <Name>AccesoDeDatos</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

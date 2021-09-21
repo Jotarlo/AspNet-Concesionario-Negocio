@@ -20,7 +20,14 @@ namespace AccesoDeDatos.Implementacion.Parametros
             var lista = new List<tb_marca>();
             using (ConcesionarioBDEntities bd = new ConcesionarioBDEntities())
             {
-                lista = bd.tb_marca.Where(x => x.nombre.ToUpper().Contains(filtro.ToUpper())).ToList();
+                if (String.IsNullOrWhiteSpace(filtro))
+                {
+                    lista = bd.tb_marca.ToList();
+                }
+                else
+                {
+                    lista = bd.tb_marca.Where(x => x.nombre.ToUpper().Contains(filtro.ToUpper())).ToList();
+                }
             }
             return lista;
         }
