@@ -115,7 +115,7 @@ namespace AccesoDeDatos.Implementacion.Parametros
                 {
                     // verificación de la existencia de un registro con el mismo id
                     tb_marca registro = bd.tb_marca.Find(id);
-                    if (registro == null)
+                    if (registro == null || registro.tb_vehiculo.Count() > 0)
                     {
                         return false;
                     }

@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using AccesoDeDatos.Implementacion.Parametros;
 using AccesoDeDatos.ModeloDeDatos;
+using Concesionario.GUI.Helpers;
+using Concesionario.GUI.Mapeadores.Parametros;
 using Concesionario.GUI.Models.Parametros;
 
 namespace Concesionario.GUI.Controllers.Parameters
@@ -20,15 +22,8 @@ namespace Concesionario.GUI.Controllers.Parameters
         public ActionResult Index(String filtro = "")
         {
             IEnumerable<tb_marca> listaDatos = acceso.ListarRegistros(String.Empty);
-            IList<ModeloMarcaGUI> listaGUI = new List<ModeloMarcaGUI>();
-            foreach (var item in listaDatos)
-            {
-                listaGUI.Add(new ModeloMarcaGUI{
-                    Id = item.id,
-                    Nombre = item.nombre
-                });
-            }
-
+            MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+            IEnumerable<ModeloMarcaGUI> listaGUI = mapper.MapearTipo1Tipo2(listaDatos);
             return View(listaGUI);
         }
 
@@ -44,7 +39,9 @@ namespace Concesionario.GUI.Controllers.Parameters
             {
                 return HttpNotFound();
             }
-            return View(tb_marca);
+            MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+            ModeloMarcaGUI modelo = mapper.MapearTipo1Tipo2(tb_marca);
+            return View(modelo);
         }
 
         // GET: Marca/Create
@@ -58,15 +55,17 @@ namespace Concesionario.GUI.Controllers.Parameters
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,nombre")] tb_marca tb_marca)
+        public ActionResult Create([Bind(Include = "Id,Nombre")] ModeloMarcaGUI modelo)
         {
             if (ModelState.IsValid)
             {
+                MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+                tb_marca tb_marca = mapper.MapearTipo2Tipo1(modelo);
                 acceso.GuardarRegistro(tb_marca);
                 return RedirectToAction("Index");
             }
 
-            return View(tb_marca);
+            return View(modelo);
         }
 
         // GET: Marca/Edit/5
@@ -81,7 +80,9 @@ namespace Concesionario.GUI.Controllers.Parameters
             {
                 return HttpNotFound();
             }
-            return View(tb_marca);
+            MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+            ModeloMarcaGUI modelo = mapper.MapearTipo1Tipo2(tb_marca);
+            return View(modelo);
         }
 
         // POST: Marca/Edit/5
@@ -89,14 +90,16 @@ namespace Concesionario.GUI.Controllers.Parameters
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,nombre")] tb_marca tb_marca)
+        public ActionResult Edit([Bind(Include = "Id,Nombre")] ModeloMarcaGUI modelo)
         {
             if (ModelState.IsValid)
             {
+                MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+                tb_marca tb_marca = mapper.MapearTipo2Tipo1(modelo);
                 acceso.EditarRegistro(tb_marca);
                 return RedirectToAction("Index");
             }
-            return View(tb_marca);
+            return View(modelo);
         }
 
         // GET: Marca/Delete/5
@@ -111,7 +114,9 @@ namespace Concesionario.GUI.Controllers.Parameters
             {
                 return HttpNotFound();
             }
-            return View(tb_marca);
+            MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+            ModeloMarcaGUI modelo = mapper.MapearTipo1Tipo2(tb_marca);
+            return View(modelo);
         }
 
         // POST: Marca/Delete/5
@@ -119,9 +124,25 @@ namespace Concesionario.GUI.Controllers.Parameters
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            acceso.EliminarRegistro(id);
-            return RedirectToAction("Index");
+            bool respuesta = acceso.EliminarRegistro(id);
+            if (respuesta)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                tb_marca tb_marca = acceso.BuscarRegistro(id);
+                if (tb_marca == null)
+                {
+                    return HttpNotFound();
+                }
+                MapeadorMarcaGUI mapper = new MapeadorMarcaGUI();
+                ViewBag.mensaje = Mensajes.mensajeErrorEliminar;
+                ModeloMarcaGUI modelo = mapper.MapearTipo1Tipo2(tb_marca);
+                return View(modelo);
+            }
         }
     }
 
 }
+
