@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<Concesionario.GUI.Models.Parametros.ModeloMarcaGUI>
+@using PagedList.Mvc;
+@using PagedList; <!--import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)-->
 
 @{
     ViewBag.Title = "Index";
@@ -7,11 +9,11 @@
 <h2>Marcas</h2>
 
 <p>
-    @Html.ActionLink("Nuevo Registro", "Create", new { }, new { @class="btn btn-success" })
+    @Html.ActionLink("Nuevo Registro", "Create", new { }, new { @class = "btn btn-success" })
 </p>
 <input type="text" name="txtFiltro" id="txtFiltro" />
 <button type="submit" class="btn btn-info">Filtrar</button>
-<table class="table table-responsive " >
+<table class="table table-responsive ">
     <thead class="thead-dark">
         <tr>
             <th>
@@ -37,3 +39,5 @@
     </tbody>
 
 </table>
+
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }))

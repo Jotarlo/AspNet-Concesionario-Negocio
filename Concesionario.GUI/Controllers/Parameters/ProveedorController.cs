@@ -6,13 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using AccesoDeDatos.ModeloDeDatos;
 
 namespace Concesionario.GUI.Controllers.Parameters
 {
     public class ProveedorController : Controller
     {
-        private ConcesionarioBDEntities db = new ConcesionarioBDEntities();
+        /*private ConcesionarioBDEntities db = new ConcesionarioBDEntities();
 
         // GET: Proveedor
         public ActionResult Index()
@@ -122,6 +121,6 @@ namespace Concesionario.GUI.Controllers.Parameters
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
+        }*/
     }
 }

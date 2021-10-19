@@ -1,18 +1,13 @@
-﻿using AccesoDeDatos.ModeloDeDatos;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Concesionario.GUI.Controllers.Vehiculo
 {
     public class VehiculoController : Controller
     {
-        private ConcesionarioBDEntities db = new ConcesionarioBDEntities();
+        /*private ConcesionarioBDEntities db = new ConcesionarioBDEntities();
 
         // GET: Vehiculo
         public ActionResult Index()
@@ -135,6 +130,6 @@ namespace Concesionario.GUI.Controllers.Vehiculo
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
+        }*/
     }
 }

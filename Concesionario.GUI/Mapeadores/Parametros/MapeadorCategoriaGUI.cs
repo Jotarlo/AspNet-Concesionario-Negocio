@@ -4,18 +4,18 @@ using System.Collections.Generic;
 
 namespace Concesionario.GUI.Mapeadores.Parametros
 {
-    public class MapeadorMarcaGUI : MapeadorBaseGUI<MarcaDTO, ModeloMarcaGUI>
+    public class MapeadorCategoriaGUI : MapeadorBaseGUI<CategoriaDTO, ModeloCategoriaGUI>
     {
-        public override ModeloMarcaGUI MapearTipo1Tipo2(MarcaDTO entrada)
+        public override ModeloCategoriaGUI MapearTipo1Tipo2(CategoriaDTO entrada)
         {
-            return new ModeloMarcaGUI()
+            return new ModeloCategoriaGUI()
             {
                 Id = entrada.Id,
                 Nombre = entrada.Nombre
             };
         }
 
-        public override IEnumerable<ModeloMarcaGUI> MapearTipo1Tipo2(IEnumerable<MarcaDTO> entrada)
+        public override IEnumerable<ModeloCategoriaGUI> MapearTipo1Tipo2(IEnumerable<CategoriaDTO> entrada)
         {
             foreach (var item in entrada)
             {
@@ -23,16 +23,16 @@ namespace Concesionario.GUI.Mapeadores.Parametros
             }
         }
 
-        public override MarcaDTO MapearTipo2Tipo1(ModeloMarcaGUI entrada)
+        public override CategoriaDTO MapearTipo2Tipo1(ModeloCategoriaGUI entrada)
         {
-            return new MarcaDTO()
+            return new CategoriaDTO()
             {
                 Id = entrada.Id,
                 Nombre = entrada.Nombre
             };
         }
 
-        public override IEnumerable<MarcaDTO> MapearTipo2Tipo1(IEnumerable<ModeloMarcaGUI> entrada)
+        public override IEnumerable<CategoriaDTO> MapearTipo2Tipo1(IEnumerable<ModeloCategoriaGUI> entrada)
         {
             foreach (var item in entrada)
             {

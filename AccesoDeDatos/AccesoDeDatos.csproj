@@ -50,10 +50,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbModel\Parametros\CategoriaDbModel.cs" />
+    <Compile Include="DbModel\Parametros\MarcaDbModel.cs" />
     <Compile Include="Implementacion\Parametros\ImplProveedorDatos.cs" />
     <Compile Include="Implementacion\Parametros\ImplCategoriaDatos.cs" />
     <Compile Include="Implementacion\Parametros\ImplMarcaDatos.cs" />
     <Compile Include="Implementacion\Vehiculo\ImplProveedorDatos.cs" />
+    <Compile Include="Mapeadores\MapeadorBaseDatos.cs" />
+    <Compile Include="Mapeadores\Parametros\MapeadorCategoriaDatos.cs" />
+    <Compile Include="Mapeadores\Parametros\MapeadorMarcaDatos.cs" />
     <Compile Include="ModeloDeDatos\ModeloConcesionario.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
