@@ -1,4 +1,12 @@
-﻿using System.Data.Entity;
+﻿using Concesionario.GUI.Helpers;
+using Concesionario.GUI.Mapeadores.Vehiculo;
+using Concesionario.GUI.Models.Vehiculo;
+using LogicaNegocio.DTO.Vehiculo;
+using LogicaNegocio.Implementacion.Vehiculo;
+using PagedList;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -7,13 +15,20 @@ namespace Concesionario.GUI.Controllers.Vehiculo
 {
     public class VehiculoController : Controller
     {
-        /*private ConcesionarioBDEntities db = new ConcesionarioBDEntities();
+        private ImplVehiculoLogica logica = new ImplVehiculoLogica();
 
         // GET: Vehiculo
-        public ActionResult Index()
+        public ActionResult Index(int? page, String filtro = "")
         {
-            var tb_vehiculo = db.tb_vehiculo.Include(t => t.tb_categoria).Include(t => t.tb_marca).Include(t => t.tb_proveedor);
-            return View(tb_vehiculo.ToList());
+            int numPagina = page ?? 1;
+            int totalRegistros;
+            int registrosPorPagina = DatosGenerales.RegistrosPorPagina;
+            IEnumerable<VehiculoDTO> listaDatos = logica.ListarRegistros(filtro, numPagina, registrosPorPagina, out totalRegistros);
+            MapeadorVehiculoGUI mapper = new MapeadorVehiculoGUI();
+            IEnumerable<ModeloVehiculoGUI> listaGUI = mapper.MapearTipo1Tipo2(listaDatos);
+            //var registrosPagina = listaGUI.ToPagedList(numPagina, registrosPorPagina);
+            var listaPagina = new StaticPagedList<ModeloVehiculoGUI>(listaGUI, numPagina, registrosPorPagina, totalRegistros);
+            return View(listaPagina);
         }
 
         // GET: Vehiculo/Details/5
@@ -23,20 +38,19 @@ namespace Concesionario.GUI.Controllers.Vehiculo
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_vehiculo tb_vehiculo = db.tb_vehiculo.Find(id);
-            if (tb_vehiculo == null)
+            VehiculoDTO VehiculoDTO = logica.BuscarRegistro(id.Value);
+            if (VehiculoDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_vehiculo);
+            MapeadorVehiculoGUI mapper = new MapeadorVehiculoGUI();
+            ModeloVehiculoGUI modelo = mapper.MapearTipo1Tipo2(VehiculoDTO);
+            return View(modelo);
         }
 
         // GET: Vehiculo/Create
         public ActionResult Create()
         {
-            ViewBag.id_categoria = new SelectList(db.tb_categoria, "id", "nombre");
-            ViewBag.id_marca = new SelectList(db.tb_marca, "id", "nombre");
-            ViewBag.id_proveedor = new SelectList(db.tb_proveedor, "id", "razon_social");
             return View();
         }
 
@@ -45,19 +59,17 @@ namespace Concesionario.GUI.Controllers.Vehiculo
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,color,modelo,serie_chasis,serie_motor,id_marca,id_categoria,precio,descuento,estado,id_proveedor")] tb_vehiculo tb_vehiculo)
+        public ActionResult Create(ModeloVehiculoGUI modelo)
         {
             if (ModelState.IsValid)
             {
-                db.tb_vehiculo.Add(tb_vehiculo);
-                db.SaveChanges();
+                MapeadorVehiculoGUI mapper = new MapeadorVehiculoGUI();
+                VehiculoDTO VehiculoDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.GuardarRegistro(VehiculoDTO);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.id_categoria = new SelectList(db.tb_categoria, "id", "nombre", tb_vehiculo.id_categoria);
-            ViewBag.id_marca = new SelectList(db.tb_marca, "id", "nombre", tb_vehiculo.id_marca);
-            ViewBag.id_proveedor = new SelectList(db.tb_proveedor, "id", "razon_social", tb_vehiculo.id_proveedor);
-            return View(tb_vehiculo);
+            return View(modelo);
         }
 
         // GET: Vehiculo/Edit/5
@@ -67,15 +79,14 @@ namespace Concesionario.GUI.Controllers.Vehiculo
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_vehiculo tb_vehiculo = db.tb_vehiculo.Find(id);
-            if (tb_vehiculo == null)
+            VehiculoDTO VehiculoDTO = logica.BuscarRegistro(id.Value);
+            if (VehiculoDTO == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.id_categoria = new SelectList(db.tb_categoria, "id", "nombre", tb_vehiculo.id_categoria);
-            ViewBag.id_marca = new SelectList(db.tb_marca, "id", "nombre", tb_vehiculo.id_marca);
-            ViewBag.id_proveedor = new SelectList(db.tb_proveedor, "id", "razon_social", tb_vehiculo.id_proveedor);
-            return View(tb_vehiculo);
+            MapeadorVehiculoGUI mapper = new MapeadorVehiculoGUI();
+            ModeloVehiculoGUI modelo = mapper.MapearTipo1Tipo2(VehiculoDTO);
+            return View(modelo);
         }
 
         // POST: Vehiculo/Edit/5
@@ -83,18 +94,16 @@ namespace Concesionario.GUI.Controllers.Vehiculo
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,color,modelo,serie_chasis,serie_motor,id_marca,id_categoria,precio,descuento,estado,id_proveedor")] tb_vehiculo tb_vehiculo)
+        public ActionResult Edit(ModeloVehiculoGUI modelo)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tb_vehiculo).State = EntityState.Modified;
-                db.SaveChanges();
+                MapeadorVehiculoGUI mapper = new MapeadorVehiculoGUI();
+                VehiculoDTO VehiculoDTO = mapper.MapearTipo2Tipo1(modelo);
+                logica.EditarRegistro(VehiculoDTO);
                 return RedirectToAction("Index");
             }
-            ViewBag.id_categoria = new SelectList(db.tb_categoria, "id", "nombre", tb_vehiculo.id_categoria);
-            ViewBag.id_marca = new SelectList(db.tb_marca, "id", "nombre", tb_vehiculo.id_marca);
-            ViewBag.id_proveedor = new SelectList(db.tb_proveedor, "id", "razon_social", tb_vehiculo.id_proveedor);
-            return View(tb_vehiculo);
+            return View(modelo);
         }
 
         // GET: Vehiculo/Delete/5
@@ -104,12 +113,14 @@ namespace Concesionario.GUI.Controllers.Vehiculo
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tb_vehiculo tb_vehiculo = db.tb_vehiculo.Find(id);
-            if (tb_vehiculo == null)
+            VehiculoDTO VehiculoDTO = logica.BuscarRegistro(id.Value);
+            if (VehiculoDTO == null)
             {
                 return HttpNotFound();
             }
-            return View(tb_vehiculo);
+            MapeadorVehiculoGUI mapper = new MapeadorVehiculoGUI();
+            ModeloVehiculoGUI modelo = mapper.MapearTipo1Tipo2(VehiculoDTO);
+            return View(modelo);
         }
 
         // POST: Vehiculo/Delete/5
@@ -117,19 +128,23 @@ namespace Concesionario.GUI.Controllers.Vehiculo
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            tb_vehiculo tb_vehiculo = db.tb_vehiculo.Find(id);
-            db.tb_vehiculo.Remove(tb_vehiculo);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            bool respuesta = logica.EliminarRegistro(id);
+            if (respuesta)
             {
-                db.Dispose();
+                return RedirectToAction("Index");
             }
-            base.Dispose(disposing);
-        }*/
+            else
+            {
+                VehiculoDTO VehiculoDTO = logica.BuscarRegistro(id);
+                if (VehiculoDTO == null)
+                {
+                    return HttpNotFound();
+                }
+                MapeadorVehiculoGUI mapper = new MapeadorVehiculoGUI();
+                ViewBag.mensaje = Mensajes.mensajeErrorEliminar;
+                ModeloVehiculoGUI modelo = mapper.MapearTipo1Tipo2(VehiculoDTO);
+                return View(modelo);
+            }
+        }
     }
 }

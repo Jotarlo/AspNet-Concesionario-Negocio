@@ -33,5 +33,7 @@ namespace AccesoDeDatos.ModeloDeDatos
         public virtual DbSet<tb_usuario_vendedor> tb_usuario_vendedor { get; set; }
         public virtual DbSet<tb_vehiculo> tb_vehiculo { get; set; }
         public virtual DbSet<tb_vendedor> tb_vendedor { get; set; }
+        public virtual DbSet<tb_factura> tb_factura { get; set; }
+        public virtual DbSet<tb_ventas> tb_ventas { get; set; }
     }
 }

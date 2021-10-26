@@ -20,6 +20,7 @@ namespace AccesoDeDatos.ModeloDeDatos
             this.tb_cliente = new HashSet<tb_cliente>();
             this.tb_cliente1 = new HashSet<tb_cliente>();
             this.tb_usuario_vendedor = new HashSet<tb_usuario_vendedor>();
+            this.tb_ventas = new HashSet<tb_ventas>();
         }
     
         public int id { get; set; }
@@ -38,5 +39,7 @@ namespace AccesoDeDatos.ModeloDeDatos
         public virtual ICollection<tb_cliente> tb_cliente1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_usuario_vendedor> tb_usuario_vendedor { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_ventas> tb_ventas { get; set; }
     }
 }

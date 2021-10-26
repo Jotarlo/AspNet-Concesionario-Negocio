@@ -43,11 +43,14 @@
   <ItemGroup>
     <Compile Include="DTO\Parametros\CategoriaDTO.cs" />
     <Compile Include="DTO\Parametros\MarcaDTO.cs" />
+    <Compile Include="DTO\Vehiculo\VehiculoDTO.cs" />
     <Compile Include="Implementacion\Parametros\ImplCategoriaLogica.cs" />
     <Compile Include="Implementacion\Parametros\ImplMarcaLogica.cs" />
+    <Compile Include="Implementacion\Vehiculo\ImplVehiculoLogica.cs" />
     <Compile Include="Mapeadores\MapeadorBaseLogica.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorCategoriaLogica.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorMarcaLogica.cs" />
+    <Compile Include="Mapeadores\Vehiculo\MapeadorVehiculoLogica.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

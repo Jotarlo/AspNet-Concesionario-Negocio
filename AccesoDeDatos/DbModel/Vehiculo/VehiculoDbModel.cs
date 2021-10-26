@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Concesionario.GUI.Models.Vehiculo
+namespace AccesoDeDatos.DbModel.Vehiculo
 {
-    public class ModeloVehiculoGUI
+    public class VehiculoDbModel
     {
 
         private int id;
@@ -20,8 +19,6 @@ namespace Concesionario.GUI.Models.Vehiculo
 
         private string color;
 
-        [Required]
-        [DisplayName("Color")]
         public string Color
         {
             get { return color; }
@@ -30,7 +27,6 @@ namespace Concesionario.GUI.Models.Vehiculo
 
         private int modelo;
 
-        [Required]
         public int Modelo
         {
             get { return modelo; }
@@ -39,8 +35,6 @@ namespace Concesionario.GUI.Models.Vehiculo
 
         private string serie_chasis;
 
-        [Required]
-        [DisplayName("Serie del Chasis")]
         public string SerieChasis
         {
             get { return serie_chasis; }
@@ -49,8 +43,6 @@ namespace Concesionario.GUI.Models.Vehiculo
 
         private string serie_motor;
 
-        [Required]
-        [DisplayName("Serie del Motor")]
         public string SerieMotor
         {
             get { return serie_motor; }
@@ -59,7 +51,6 @@ namespace Concesionario.GUI.Models.Vehiculo
 
         private int idMarca;
 
-        [Required]
         public int IdMarca
         {
             get { return idMarca; }
@@ -68,7 +59,6 @@ namespace Concesionario.GUI.Models.Vehiculo
 
         private int idCategoria;
 
-        [Required]
         public int IdCategoria
         {
             get { return idCategoria; }
@@ -77,7 +67,6 @@ namespace Concesionario.GUI.Models.Vehiculo
 
         private int precio;
 
-        [Required]
         public int Precio
         {
             get { return precio; }
@@ -86,7 +75,6 @@ namespace Concesionario.GUI.Models.Vehiculo
 
         private int descuento;
 
-        [Required]
         public int Descuento
         {
             get { return descuento; }
@@ -95,7 +83,6 @@ namespace Concesionario.GUI.Models.Vehiculo
 
         private bool estado;
 
-        [Required]
         public bool Estado
         {
             get { return estado; }
@@ -104,17 +91,14 @@ namespace Concesionario.GUI.Models.Vehiculo
 
         private int idProveedor;
 
-        [Required]
-        [DisplayName("Proveedor")]
         public int IdProveedor
         {
             get { return idProveedor; }
             set { idProveedor = value; }
         }
 
-        private string razonSocialProveedor;
 
-        [DisplayName("Proveedor")]
+        private string razonSocialProveedor;
         public string RazonSocialProveedor
         {
             get { return razonSocialProveedor; }
@@ -123,7 +107,6 @@ namespace Concesionario.GUI.Models.Vehiculo
 
         private string nombreMarca;
 
-        [DisplayName("Marca")]
         public string NombreMarca
         {
             get { return nombreMarca; }
@@ -132,13 +115,10 @@ namespace Concesionario.GUI.Models.Vehiculo
 
         private string nombreCategoria;
 
-        [DisplayName("Categoría")]
         public string NombreCategoria
         {
             get { return nombreCategoria; }
             set { nombreCategoria = value; }
         }
-
-
     }
 }

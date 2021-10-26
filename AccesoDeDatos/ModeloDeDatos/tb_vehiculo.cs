@@ -18,6 +18,7 @@ namespace AccesoDeDatos.ModeloDeDatos
         public tb_vehiculo()
         {
             this.tb_fotos = new HashSet<tb_fotos>();
+            this.tb_ventas = new HashSet<tb_ventas>();
         }
     
         public int id { get; set; }
@@ -37,5 +38,7 @@ namespace AccesoDeDatos.ModeloDeDatos
         public virtual ICollection<tb_fotos> tb_fotos { get; set; }
         public virtual tb_marca tb_marca { get; set; }
         public virtual tb_proveedor tb_proveedor { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_ventas> tb_ventas { get; set; }
     }
 }

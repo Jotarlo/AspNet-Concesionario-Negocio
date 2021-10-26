@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ConcesionarioBDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ConcesionarioBDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tb_categoria">
           <Key>
             <PropertyRef Name="id" />
@@ -28,6 +28,16 @@
           <Property Name="fecha_creacion" Type="datetime" Nullable="false" />
           <Property Name="editor" Type="int" />
           <Property Name="fecha_edicion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tb_factura">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_venta" Type="int" Nullable="false" />
+          <Property Name="consecutivo" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="precio_venta" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="tb_fotos">
           <Key>
@@ -92,6 +102,16 @@
           <Property Name="celular" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="correo" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="foto" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="tb_ventas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_vehiculo" Type="int" Nullable="false" />
+          <Property Name="id_vendedor" Type="int" Nullable="false" />
+          <Property Name="id_cliente" Type="int" Nullable="false" />
+          <Property Name="placa" Type="nvarchar" MaxLength="8" Nullable="false" />
         </EntityType>
         <Association Name="FK__tb_client__cread__1B0907CE">
           <End Role="tb_vendedor" Type="Self.tb_vendedor" Multiplicity="1" />
@@ -165,6 +185,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__tb_ventas__id_cl__38996AB5">
+          <End Role="tb_cliente" Type="Self.tb_cliente" Multiplicity="1" />
+          <End Role="tb_ventas" Type="Self.tb_ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_ventas">
+              <PropertyRef Name="id_cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_ventas__id_ve__36B12243">
+          <End Role="tb_vehiculo" Type="Self.tb_vehiculo" Multiplicity="1" />
+          <End Role="tb_ventas" Type="Self.tb_ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_vehiculo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_ventas">
+              <PropertyRef Name="id_vehiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_ventas__id_ve__37A5467C">
+          <End Role="tb_vendedor" Type="Self.tb_vendedor" Multiplicity="1" />
+          <End Role="tb_ventas" Type="Self.tb_ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_vendedor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_ventas">
+              <PropertyRef Name="id_vendedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ID_VENTA_PARA_FACTURA">
+          <End Role="tb_ventas" Type="Self.tb_ventas" Multiplicity="1" />
+          <End Role="tb_factura" Type="Self.tb_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ventas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_factura">
+              <PropertyRef Name="id_venta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="vendedor_editor_cliente_FK">
           <End Role="tb_vendedor" Type="Self.tb_vendedor" Multiplicity="0..1" />
           <End Role="tb_cliente" Type="Self.tb_cliente" Multiplicity="*" />
@@ -180,12 +248,14 @@
         <EntityContainer Name="ConcesionarioBDModelStoreContainer">
           <EntitySet Name="tb_categoria" EntityType="Self.tb_categoria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_cliente" EntityType="Self.tb_cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_factura" EntityType="Self.tb_factura" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_fotos" EntityType="Self.tb_fotos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_marca" EntityType="Self.tb_marca" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_proveedor" EntityType="Self.tb_proveedor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_usuario_vendedor" EntityType="Self.tb_usuario_vendedor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_vehiculo" EntityType="Self.tb_vehiculo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_vendedor" EntityType="Self.tb_vendedor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ventas" EntityType="Self.tb_ventas" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__tb_client__cread__1B0907CE" Association="Self.FK__tb_client__cread__1B0907CE">
             <End Role="tb_vendedor" EntitySet="tb_vendedor" />
             <End Role="tb_cliente" EntitySet="tb_cliente" />
@@ -210,13 +280,28 @@
             <End Role="tb_proveedor" EntitySet="tb_proveedor" />
             <End Role="tb_vehiculo" EntitySet="tb_vehiculo" />
           </AssociationSet>
+          <AssociationSet Name="FK__tb_ventas__id_cl__38996AB5" Association="Self.FK__tb_ventas__id_cl__38996AB5">
+            <End Role="tb_cliente" EntitySet="tb_cliente" />
+            <End Role="tb_ventas" EntitySet="tb_ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_ventas__id_ve__36B12243" Association="Self.FK__tb_ventas__id_ve__36B12243">
+            <End Role="tb_vehiculo" EntitySet="tb_vehiculo" />
+            <End Role="tb_ventas" EntitySet="tb_ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_ventas__id_ve__37A5467C" Association="Self.FK__tb_ventas__id_ve__37A5467C">
+            <End Role="tb_vendedor" EntitySet="tb_vendedor" />
+            <End Role="tb_ventas" EntitySet="tb_ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ID_VENTA_PARA_FACTURA" Association="Self.FK_ID_VENTA_PARA_FACTURA">
+            <End Role="tb_ventas" EntitySet="tb_ventas" />
+            <End Role="tb_factura" EntitySet="tb_factura" />
+          </AssociationSet>
           <AssociationSet Name="vendedor_editor_cliente_FK" Association="Self.vendedor_editor_cliente_FK">
             <End Role="tb_vendedor" EntitySet="tb_vendedor" />
             <End Role="tb_cliente" EntitySet="tb_cliente" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ConcesionarioBDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -246,6 +331,7 @@
           <Property Name="fecha_edicion" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tb_vendedor" Relationship="Self.FK__tb_client__cread__1B0907CE" FromRole="tb_cliente" ToRole="tb_vendedor" />
           <NavigationProperty Name="tb_vendedor1" Relationship="Self.vendedor_editor_cliente_FK" FromRole="tb_cliente" ToRole="tb_vendedor" />
+          <NavigationProperty Name="tb_ventas" Relationship="ConcesionarioBDModel.FK__tb_ventas__id_cl__38996AB5" FromRole="tb_cliente" ToRole="tb_ventas" />
         </EntityType>
         <EntityType Name="tb_fotos">
           <Key>
@@ -304,6 +390,7 @@
           <NavigationProperty Name="tb_fotos" Relationship="Self.FK__tb_fotos__id_veh__239E4DCF" FromRole="tb_vehiculo" ToRole="tb_fotos" />
           <NavigationProperty Name="tb_marca" Relationship="Self.FK__tb_vehicu__id_ma__1ED998B2" FromRole="tb_vehiculo" ToRole="tb_marca" />
           <NavigationProperty Name="tb_proveedor" Relationship="Self.FK__tb_vehicu__id_pr__20C1E124" FromRole="tb_vehiculo" ToRole="tb_proveedor" />
+          <NavigationProperty Name="tb_ventas" Relationship="ConcesionarioBDModel.FK__tb_ventas__id_ve__36B12243" FromRole="tb_vehiculo" ToRole="tb_ventas" />
         </EntityType>
         <EntityType Name="tb_vendedor">
           <Key>
@@ -321,6 +408,7 @@
           <NavigationProperty Name="tb_cliente" Relationship="Self.FK__tb_client__cread__1B0907CE" FromRole="tb_vendedor" ToRole="tb_cliente" />
           <NavigationProperty Name="tb_cliente1" Relationship="Self.vendedor_editor_cliente_FK" FromRole="tb_vendedor" ToRole="tb_cliente" />
           <NavigationProperty Name="tb_usuario_vendedor" Relationship="Self.FK__tb_usuari__id_ve__267ABA7A" FromRole="tb_vendedor" ToRole="tb_usuario_vendedor" />
+          <NavigationProperty Name="tb_ventas" Relationship="ConcesionarioBDModel.FK__tb_ventas__id_ve__37A5467C" FromRole="tb_vendedor" ToRole="tb_ventas" />
         </EntityType>
         <Association Name="FK__tb_vehicu__id_ca__1FCDBCEB">
           <End Role="tb_categoria" Type="Self.tb_categoria" Multiplicity="1" />
@@ -443,7 +531,98 @@
             <End Role="tb_vendedor" EntitySet="tb_vendedor" />
             <End Role="tb_usuario_vendedor" EntitySet="tb_usuario_vendedor" />
           </AssociationSet>
+          <EntitySet Name="tb_factura" EntityType="ConcesionarioBDModel.tb_factura" />
+          <EntitySet Name="tb_ventas" EntityType="ConcesionarioBDModel.tb_ventas" />
+          <AssociationSet Name="FK__tb_ventas__id_cl__38996AB5" Association="ConcesionarioBDModel.FK__tb_ventas__id_cl__38996AB5">
+            <End Role="tb_cliente" EntitySet="tb_cliente" />
+            <End Role="tb_ventas" EntitySet="tb_ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_ventas__id_ve__36B12243" Association="ConcesionarioBDModel.FK__tb_ventas__id_ve__36B12243">
+            <End Role="tb_vehiculo" EntitySet="tb_vehiculo" />
+            <End Role="tb_ventas" EntitySet="tb_ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_ventas__id_ve__37A5467C" Association="ConcesionarioBDModel.FK__tb_ventas__id_ve__37A5467C">
+            <End Role="tb_vendedor" EntitySet="tb_vendedor" />
+            <End Role="tb_ventas" EntitySet="tb_ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ID_VENTA_PARA_FACTURA" Association="ConcesionarioBDModel.FK_ID_VENTA_PARA_FACTURA">
+            <End Role="tb_ventas" EntitySet="tb_ventas" />
+            <End Role="tb_factura" EntitySet="tb_factura" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="tb_factura">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_venta" Type="Int32" Nullable="false" />
+          <Property Name="consecutivo" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="precio_venta" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="tb_ventas" Relationship="ConcesionarioBDModel.FK_ID_VENTA_PARA_FACTURA" FromRole="tb_factura" ToRole="tb_ventas" />
+        </EntityType>
+        <EntityType Name="tb_ventas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_vehiculo" Type="Int32" Nullable="false" />
+          <Property Name="id_vendedor" Type="Int32" Nullable="false" />
+          <Property Name="id_cliente" Type="Int32" Nullable="false" />
+          <Property Name="placa" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tb_cliente" Relationship="ConcesionarioBDModel.FK__tb_ventas__id_cl__38996AB5" FromRole="tb_ventas" ToRole="tb_cliente" />
+          <NavigationProperty Name="tb_vehiculo" Relationship="ConcesionarioBDModel.FK__tb_ventas__id_ve__36B12243" FromRole="tb_ventas" ToRole="tb_vehiculo" />
+          <NavigationProperty Name="tb_vendedor" Relationship="ConcesionarioBDModel.FK__tb_ventas__id_ve__37A5467C" FromRole="tb_ventas" ToRole="tb_vendedor" />
+          <NavigationProperty Name="tb_factura" Relationship="ConcesionarioBDModel.FK_ID_VENTA_PARA_FACTURA" FromRole="tb_ventas" ToRole="tb_factura" />
+        </EntityType>
+        <Association Name="FK__tb_ventas__id_cl__38996AB5">
+          <End Type="ConcesionarioBDModel.tb_cliente" Role="tb_cliente" Multiplicity="1" />
+          <End Type="ConcesionarioBDModel.tb_ventas" Role="tb_ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_ventas">
+              <PropertyRef Name="id_cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_ventas__id_ve__36B12243">
+          <End Type="ConcesionarioBDModel.tb_vehiculo" Role="tb_vehiculo" Multiplicity="1" />
+          <End Type="ConcesionarioBDModel.tb_ventas" Role="tb_ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_vehiculo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_ventas">
+              <PropertyRef Name="id_vehiculo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_ventas__id_ve__37A5467C">
+          <End Type="ConcesionarioBDModel.tb_vendedor" Role="tb_vendedor" Multiplicity="1" />
+          <End Type="ConcesionarioBDModel.tb_ventas" Role="tb_ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_vendedor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_ventas">
+              <PropertyRef Name="id_vendedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ID_VENTA_PARA_FACTURA">
+          <End Type="ConcesionarioBDModel.tb_ventas" Role="tb_ventas" Multiplicity="1" />
+          <End Type="ConcesionarioBDModel.tb_factura" Role="tb_factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ventas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_factura">
+              <PropertyRef Name="id_venta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -543,6 +722,28 @@
                 <ScalarProperty Name="celular" ColumnName="celular" />
                 <ScalarProperty Name="correo" ColumnName="correo" />
                 <ScalarProperty Name="foto" ColumnName="foto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_factura">
+            <EntityTypeMapping TypeName="ConcesionarioBDModel.tb_factura">
+              <MappingFragment StoreEntitySet="tb_factura">
+                <ScalarProperty Name="precio_venta" ColumnName="precio_venta" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="consecutivo" ColumnName="consecutivo" />
+                <ScalarProperty Name="id_venta" ColumnName="id_venta" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_ventas">
+            <EntityTypeMapping TypeName="ConcesionarioBDModel.tb_ventas">
+              <MappingFragment StoreEntitySet="tb_ventas">
+                <ScalarProperty Name="placa" ColumnName="placa" />
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+                <ScalarProperty Name="id_vendedor" ColumnName="id_vendedor" />
+                <ScalarProperty Name="id_vehiculo" ColumnName="id_vehiculo" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

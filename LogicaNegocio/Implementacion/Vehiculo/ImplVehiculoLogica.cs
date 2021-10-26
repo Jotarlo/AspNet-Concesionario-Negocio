@@ -1,21 +1,21 @@
-﻿using AccesoDeDatos.DbModel.Parametros;
-using AccesoDeDatos.Implementacion.Parametros;
-using LogicaNegocio.DTO.Parametros;
-using LogicaNegocio.Mapeadores.Parametros;
+﻿using AccesoDeDatos.DbModel.Vehiculo;
+using AccesoDeDatos.Implementacion.Vehiculo;
+using LogicaNegocio.DTO.Vehiculo;
+using LogicaNegocio.Mapeadores.Vehiculo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicaNegocio.Implementacion.Parametros
+namespace LogicaNegocio.Implementacion.Vehiculo
 {
-    public class ImplMarcaLogica
+    public class ImplVehiculoLogica
     {
-        private ImplMarcaDatos accesoDatos;
-        public ImplMarcaLogica()
+        private ImplVehiculoDatos accesoDatos;
+        public ImplVehiculoLogica()
         {
-            this.accesoDatos = new ImplMarcaDatos();
+            this.accesoDatos = new ImplVehiculoDatos();
         }
 
         /// <summary>
@@ -26,12 +26,12 @@ namespace LogicaNegocio.Implementacion.Parametros
         /// <param name="registrosPorPagina">Cantidad de registros a mostrar por página</param>
         /// <param name="totalRegistros">Total de registros en base de datos</param>
         /// <returns>Listado de registros para mostrar en la página actual que coincida con el filtro</returns>
-        public IEnumerable<MarcaDTO> ListarRegistros(String filtro, int numPagina, int registrosPorPagina, out int totalRegistros)
+        public IEnumerable<VehiculoDTO> ListarRegistros(String filtro, int numPagina, int registrosPorPagina, out int totalRegistros)
         {
             //int totalRegistrosLogica = 0;
             var listado = this.accesoDatos.ListarRegistros(filtro, numPagina, registrosPorPagina, out totalRegistros);
             //totalRegistros = totalRegistrosLogica;
-            MapeadorMarcaLogica mapeador = new MapeadorMarcaLogica();
+            MapeadorVehiculoLogica mapeador = new MapeadorVehiculoLogica();
             return mapeador.MapearTipo1Tipo2(listado);
         }
 
@@ -40,25 +40,25 @@ namespace LogicaNegocio.Implementacion.Parametros
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public MarcaDTO BuscarRegistro(int id)
+        public VehiculoDTO BuscarRegistro(int id)
         {
             var registro = this.accesoDatos.BuscarRegistro(id);
-            MapeadorMarcaLogica mapeador = new MapeadorMarcaLogica();
+            MapeadorVehiculoLogica mapeador = new MapeadorVehiculoLogica();
             return mapeador.MapearTipo1Tipo2(registro);
         }
 
-        public Boolean EditarRegistro(MarcaDTO registro)
+        public Boolean EditarRegistro(VehiculoDTO registro)
         {
-            MapeadorMarcaLogica mapeador = new MapeadorMarcaLogica();
-            MarcaDbModel reg = mapeador.MapearTipo2Tipo1(registro);
+            MapeadorVehiculoLogica mapeador = new MapeadorVehiculoLogica();
+            VehiculoDbModel reg = mapeador.MapearTipo2Tipo1(registro);
             Boolean res = this.accesoDatos.EditarRegistro(reg);
             return res;
         }
 
-        public Boolean GuardarRegistro(MarcaDTO registro)
+        public Boolean GuardarRegistro(VehiculoDTO registro)
         {
-            MapeadorMarcaLogica mapeador = new MapeadorMarcaLogica();
-            MarcaDbModel reg = mapeador.MapearTipo2Tipo1(registro);
+            MapeadorVehiculoLogica mapeador = new MapeadorVehiculoLogica();
+            VehiculoDbModel reg = mapeador.MapearTipo2Tipo1(registro);
             Boolean res = this.accesoDatos.GuardarRegistro(reg);
             return res;
         }

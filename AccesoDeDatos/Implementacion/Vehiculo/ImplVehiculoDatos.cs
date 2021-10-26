@@ -1,4 +1,6 @@
-﻿using AccesoDeDatos.ModeloDeDatos;
+﻿using AccesoDeDatos.DbModel.Vehiculo;
+using AccesoDeDatos.Mapeadores.Vehiculo;
+using AccesoDeDatos.ModeloDeDatos;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -15,12 +17,19 @@ namespace AccesoDeDatos.Implementacion.Vehiculo
         /// </summary>
         /// <param name="filtro">Filtro a aplicar</param>
         /// <returns>Lista de registros con el filtro aplicado</returns>
-        public IEnumerable<tb_vehiculo> ListarRegistros(String filtro)
+        public IEnumerable<VehiculoDbModel> ListarRegistros(String filtro, int paginaActual, int numRegistrosPorPagina, out int totalRegistros)
         {
-            var lista = new List<tb_vehiculo>();
+            var lista = new List<VehiculoDbModel>();
             using (ConcesionarioBDEntities bd = new ConcesionarioBDEntities())
             {
-                lista = bd.tb_vehiculo.Where(x => x.serie_chasis.ToUpper().Contains(filtro.ToUpper())).ToList();
+                int regDescartados = (paginaActual - 1) * numRegistrosPorPagina;
+                //lista = bd.tb_vehiculo.Where(x => x.nombre.Contains(filtro)).Skip(regDescartados).Take(numRegistrosPorPagina).ToList();
+                var listaDatos = (from m in bd.tb_vehiculo
+                                  where m.serie_chasis.Contains(filtro) || m.serie_motor.Contains(filtro)
+                                  select m).ToList();
+                totalRegistros = listaDatos.Count();
+                listaDatos = listaDatos.OrderBy(m => m.id).Skip(regDescartados).Take(numRegistrosPorPagina).ToList();
+                lista = new MapeadorVehiculoDatos().MapearTipo1Tipo2(listaDatos).ToList();
             }
             return lista;
         }
@@ -30,19 +39,20 @@ namespace AccesoDeDatos.Implementacion.Vehiculo
         /// </summary>
         /// <param name="registro">el registro a almacenar</param>
         /// <returns>true cuando se almacena y false cuando ya existe un registro igual o una excepción</returns>
-        public bool GuardarRegistro(tb_vehiculo registro)
+        public bool GuardarRegistro(VehiculoDbModel registro)
         {
             try
             {
                 using (ConcesionarioBDEntities bd = new ConcesionarioBDEntities())
                 {
-                    // verificación de la existencia de un registro con el mismo nombre
-                    if (bd.tb_vehiculo.Where(x => x.serie_chasis.ToLower().Equals(registro.serie_chasis.ToLower())).Count() > 0)
+                    // verificación de la existencia de un registro con el mismo serial del chasis
+                    if (bd.tb_vehiculo.Where(x => x.serie_chasis.ToLower().Equals(registro.SerieChasis.ToLower())).Count() > 0)
                     {
                         return false;
                     }
-
-                    bd.tb_vehiculo.Add(registro);
+                    MapeadorVehiculoDatos mapeador = new MapeadorVehiculoDatos();
+                    var reg = mapeador.MapearTipo2Tipo1(registro);
+                    bd.tb_vehiculo.Add(reg);
                     bd.SaveChanges();
                     return true;
                 }
@@ -58,12 +68,12 @@ namespace AccesoDeDatos.Implementacion.Vehiculo
         /// </summary>
         /// <param name="id">id del registro a buscar</param>
         /// <returns>el objeto con el id buscado o null cuando no exista</returns>
-        public tb_vehiculo BuscarRegistro(int id)
+        public VehiculoDbModel BuscarRegistro(int id)
         {
             using (ConcesionarioBDEntities bd = new ConcesionarioBDEntities())
             {
                 tb_vehiculo registro = bd.tb_vehiculo.Find(id);
-                return registro;
+                return new MapeadorVehiculoDatos().MapearTipo1Tipo2(registro);
             }
         }
 
@@ -72,19 +82,20 @@ namespace AccesoDeDatos.Implementacion.Vehiculo
         /// </summary>
         /// <param name="registro">el registro a editar</param>
         /// <returns>true cuando se edita y false cuando no existe el registro o una excepción</returns>
-        public bool EditarRegistro(tb_vehiculo registro)
+        public bool EditarRegistro(VehiculoDbModel registro)
         {
             try
             {
                 using (ConcesionarioBDEntities bd = new ConcesionarioBDEntities())
                 {
                     // verificación de la existencia de un registro con el mismo id
-                    if (bd.tb_vehiculo.Where(x => x.id == registro.id).Count() == 0)
+                    if (bd.tb_vehiculo.Where(x => x.id == registro.Id).Count() == 0)
                     {
                         return false;
                     }
-
-                    bd.Entry(registro).State = EntityState.Modified;
+                    MapeadorVehiculoDatos mapeador = new MapeadorVehiculoDatos();
+                    var reg = mapeador.MapearTipo2Tipo1(registro);
+                    bd.Entry(reg).State = EntityState.Modified;
                     bd.SaveChanges();
                     return true;
                 }
@@ -108,7 +119,7 @@ namespace AccesoDeDatos.Implementacion.Vehiculo
                 {
                     // verificación de la existencia de un registro con el mismo id
                     tb_vehiculo registro = bd.tb_vehiculo.Find(id);
-                    if (registro == null)
+                    if (registro == null || registro.tb_ventas.Count() > 0)
                     {
                         return false;
                     }

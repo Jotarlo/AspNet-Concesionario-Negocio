@@ -147,6 +147,7 @@
     <Compile Include="Mapeadores\MapeadorBaseGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorCategoriaGUI.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorMarcaGUI.cs" />
+    <Compile Include="Mapeadores\Vehiculo\MapeadorVehiculoGUI.cs" />
     <Compile Include="Models\Parametros\ModeloCategoriaGUI.cs" />
     <Compile Include="Models\Parametros\ModeloMarcaGUI.cs" />
     <Compile Include="Models\Parametros\ModeloProveedorGUI.cs" />
@@ -263,11 +264,13 @@
     <Content Include="Views\Shared\_Mensajes.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_FooterPagedList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\Vendedor\" />
     <Folder Include="Models\Ventas\" />
+    <Folder Include="UploadFiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

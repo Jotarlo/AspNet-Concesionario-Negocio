@@ -12,30 +12,24 @@ namespace AccesoDeDatos.ModeloDeDatos
     using System;
     using System.Collections.Generic;
     
-    public partial class tb_cliente
+    public partial class tb_ventas
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tb_cliente()
+        public tb_ventas()
         {
-            this.tb_ventas = new HashSet<tb_ventas>();
+            this.tb_factura = new HashSet<tb_factura>();
         }
     
         public int id { get; set; }
-        public string primer_nombre { get; set; }
-        public string otros_nombres { get; set; }
-        public string primer_apellido { get; set; }
-        public string segundo_apellido { get; set; }
-        public string documento { get; set; }
-        public string celular { get; set; }
-        public string correo { get; set; }
-        public int creador { get; set; }
-        public System.DateTime fecha_creacion { get; set; }
-        public Nullable<int> editor { get; set; }
-        public Nullable<System.DateTime> fecha_edicion { get; set; }
+        public int id_vehiculo { get; set; }
+        public int id_vendedor { get; set; }
+        public int id_cliente { get; set; }
+        public string placa { get; set; }
     
+        public virtual tb_cliente tb_cliente { get; set; }
+        public virtual tb_vehiculo tb_vehiculo { get; set; }
         public virtual tb_vendedor tb_vendedor { get; set; }
-        public virtual tb_vendedor tb_vendedor1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tb_ventas> tb_ventas { get; set; }
+        public virtual ICollection<tb_factura> tb_factura { get; set; }
     }
 }
