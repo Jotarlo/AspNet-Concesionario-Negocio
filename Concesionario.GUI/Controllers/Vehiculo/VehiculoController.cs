@@ -7,8 +7,10 @@ using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Concesionario.GUI.Controllers.Vehiculo
@@ -144,6 +146,38 @@ namespace Concesionario.GUI.Controllers.Vehiculo
                 ViewBag.mensaje = Mensajes.mensajeErrorEliminar;
                 ModeloVehiculoGUI modelo = mapper.MapearTipo1Tipo2(VehiculoDTO);
                 return View(modelo);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult UploadFile()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UploadFile(HttpPostedFileBase archivo)
+        {
+            try
+            {
+                if(archivo.ContentLength > 0)
+                {
+                    DateTime ahora = DateTime.Now;
+                    string fecha_nombre = String.Format("{0}_{1}_{2}_{3}_{4}_{5}", ahora.Day, ahora.Month, ahora.Year, ahora.Hour, ahora.Minute, ahora.Millisecond);
+                    string nombreArchivo = String.Concat(fecha_nombre, "_", Path.GetFileName(archivo.FileName));
+                    string rutaArchivo = Path.Combine(Server.MapPath("~/UploadFiles/FotosVehiculos"), nombreArchivo);
+                    archivo.SaveAs(rutaArchivo);
+                    // guardar nombre de archivo en base de datos
+                    ViewBag.UploadFileMessage = "Archivo cargado correctamente.";
+                    return View();
+                }
+                ViewBag.UploadFileMessage = "Por favor seleccione al menos un archivo a cargar.";
+                return View();
+            }
+            catch (Exception e)
+            {
+                ViewBag.UploadFileMessage = "Error al cargar el archivo.";
+                return View();
             }
         }
     }
