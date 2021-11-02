@@ -46,6 +46,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ruta" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="id_vehiculo" Type="int" Nullable="false" />
+          <Property Name="estado" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tb_marca">
           <Key>
@@ -341,6 +342,7 @@
           <Property Name="ruta" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="id_vehiculo" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tb_vehiculo" Relationship="Self.FK__tb_fotos__id_veh__239E4DCF" FromRole="tb_fotos" ToRole="tb_vehiculo" />
+          <Property Name="estado" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="tb_marca">
           <Key>
@@ -658,6 +660,7 @@
           <EntitySetMapping Name="tb_fotos">
             <EntityTypeMapping TypeName="ConcesionarioBDModel.tb_fotos">
               <MappingFragment StoreEntitySet="tb_fotos">
+                <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ruta" ColumnName="ruta" />
                 <ScalarProperty Name="id_vehiculo" ColumnName="id_vehiculo" />

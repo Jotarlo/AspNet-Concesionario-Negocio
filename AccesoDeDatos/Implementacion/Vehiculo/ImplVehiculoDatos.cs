@@ -134,5 +134,66 @@ namespace AccesoDeDatos.Implementacion.Vehiculo
             }
         }
 
+        public bool EliminarRegistroFoto(int id)
+        {
+            try
+            {
+                using (ConcesionarioBDEntities bd = new ConcesionarioBDEntities())
+                {
+                    // verificación de la existencia de un registro con el mismo id
+                    tb_fotos registro = bd.tb_fotos.Find(id);
+                    if (registro == null)
+                    {
+                        return false;
+                    }
+                    registro.estado = false;
+                    bd.Entry(registro).State = EntityState.Modified;
+                    bd.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public bool GuardarFotoVehiculo(FotoVehiculoDbModel dbModel)
+        {
+            try
+            {
+                using (ConcesionarioBDEntities bd = new ConcesionarioBDEntities())
+                {
+                    if (bd.tb_vehiculo.Where(x => x.id == dbModel.IdVehiculo).Count() > 0)
+                    {
+                        MapeadorFotoVehiculoDatos mapeador = new MapeadorFotoVehiculoDatos();
+                        tb_fotos foto = mapeador.MapearTipo2Tipo1(dbModel);
+                        bd.tb_fotos.Add(foto);
+                        bd.SaveChanges();
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public IEnumerable<FotoVehiculoDbModel> ListarFotosVehiculoPorId(int id)
+        {
+            using(ConcesionarioBDEntities bd = new ConcesionarioBDEntities())
+            {
+                //var lista = bd.tb_fotos.Where(x => x.id_vehiculo == id).ToList();
+                var lista = (from f in bd.tb_fotos
+                              where f.id_vehiculo == id && f.estado
+                              select f).ToList();
+                MapeadorFotoVehiculoDatos mapeador = new MapeadorFotoVehiculoDatos();
+                IEnumerable<FotoVehiculoDbModel> listaDbModel = mapeador.MapearTipo1Tipo2(lista);
+                return listaDbModel;
+            }
+        }
+
     }
 }

@@ -68,5 +68,28 @@ namespace LogicaNegocio.Implementacion.Vehiculo
             Boolean res = this.accesoDatos.EliminarRegistro(id);
             return res;
         }
+
+        public Boolean EliminarRegistroFoto(int id)
+        {
+            Boolean res = this.accesoDatos.EliminarRegistroFoto(id);
+            return res;
+        }
+
+        public Boolean GuardarNombreFoto(FotoVehiculoDTO dto)
+        {
+            MapeadorFotoVehiculoLogica mapeador = new MapeadorFotoVehiculoLogica();
+            FotoVehiculoDbModel dbModel = mapeador.MapearTipo2Tipo1(dto);
+            bool res = this.accesoDatos.GuardarFotoVehiculo(dbModel);
+            return res;
+        }
+
+        public IEnumerable<FotoVehiculoDTO> ListarFotosVehiculoPorId(int idVehiculo)
+        {
+
+            IEnumerable<FotoVehiculoDbModel> listaDbModel = this.accesoDatos.ListarFotosVehiculoPorId(idVehiculo);
+            MapeadorFotoVehiculoLogica mapeador = new MapeadorFotoVehiculoLogica();
+            IEnumerable<FotoVehiculoDTO> lista = mapeador.MapearTipo1Tipo2(listaDbModel);
+            return lista;
+        }
     }
 }

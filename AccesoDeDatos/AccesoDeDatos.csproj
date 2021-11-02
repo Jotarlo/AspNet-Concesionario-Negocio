@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="DbModel\Parametros\CategoriaDbModel.cs" />
     <Compile Include="DbModel\Parametros\MarcaDbModel.cs" />
+    <Compile Include="DbModel\Vehiculo\FotoVehiculoDbModel.cs" />
     <Compile Include="DbModel\Vehiculo\VehiculoDbModel.cs" />
     <Compile Include="Implementacion\Parametros\ImplProveedorDatos.cs" />
     <Compile Include="Implementacion\Parametros\ImplCategoriaDatos.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Mapeadores\MapeadorBaseDatos.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorCategoriaDatos.cs" />
     <Compile Include="Mapeadores\Parametros\MapeadorMarcaDatos.cs" />
+    <Compile Include="Mapeadores\Vehiculo\MapeadorFotoVehiculoDatos.cs" />
     <Compile Include="Mapeadores\Vehiculo\MapeadorVehiculoDatos.cs" />
     <Compile Include="ModeloDeDatos\ModeloConcesionario.Context.cs">
       <AutoGen>True</AutoGen>

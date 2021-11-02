@@ -150,26 +150,64 @@ namespace Concesionario.GUI.Controllers.Vehiculo
         }
 
         [HttpGet]
-        public ActionResult UploadFile()
+        public ActionResult UploadFile(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ModeloCargaImagenVehiculoGUI modelo = CrearModeloCargarImagenVehiculo(id);
+            return View(modelo);
+        }
+
+        private ModeloCargaImagenVehiculoGUI CrearModeloCargarImagenVehiculo(int? id)
+        {
+            IEnumerable<FotoVehiculoDTO> listaDto = logica.ListarFotosVehiculoPorId(id.Value);
+            MapeadorFotoVehiculoGUI mapeador = new MapeadorFotoVehiculoGUI();
+            IEnumerable<ModeloFotoVehiculoGUI> listaFotos = mapeador.MapearTipo1Tipo2(listaDto);
+            if (listaFotos == null)
+            {
+                listaFotos = new List<ModeloFotoVehiculoGUI>();
+            }
+            ModeloCargaImagenVehiculoGUI modelo = new ModeloCargaImagenVehiculoGUI()
+            {
+                Id = id.Value,
+                ListadoImagenesVehiculo = listaFotos
+            };
+            return modelo;
         }
 
         [HttpPost]
-        public ActionResult UploadFile(HttpPostedFileBase archivo)
+        [ValidateAntiForgeryToken]
+        public ActionResult UploadFile(ModeloCargaImagenVehiculoGUI modelo)
         {
             try
             {
-                if(archivo.ContentLength > 0)
+                if (modelo.Archivo.ContentLength > 0)
                 {
-                    DateTime ahora = DateTime.Now;
-                    string fecha_nombre = String.Format("{0}_{1}_{2}_{3}_{4}_{5}", ahora.Day, ahora.Month, ahora.Year, ahora.Hour, ahora.Minute, ahora.Millisecond);
-                    string nombreArchivo = String.Concat(fecha_nombre, "_", Path.GetFileName(archivo.FileName));
-                    string rutaArchivo = Path.Combine(Server.MapPath("~/UploadFiles/FotosVehiculos"), nombreArchivo);
-                    archivo.SaveAs(rutaArchivo);
-                    // guardar nombre de archivo en base de datos
-                    ViewBag.UploadFileMessage = "Archivo cargado correctamente.";
-                    return View();
+                    try
+                    {
+                        DateTime ahora = DateTime.Now;
+                        string fecha_nombre = String.Format("{0}_{1}_{2}_{3}_{4}_{5}", ahora.Day, ahora.Month, ahora.Year, ahora.Hour, ahora.Minute, ahora.Millisecond);
+                        string nombreArchivo = String.Concat(fecha_nombre, "_", Path.GetFileName(modelo.Archivo.FileName));
+                        string rutaCarpeta = DatosGenerales.RutaArchivosVehiculo;
+                        string rutaCompletaArchivo = Path.Combine(Server.MapPath(rutaCarpeta), nombreArchivo);
+                        modelo.Archivo.SaveAs(rutaCompletaArchivo);
+                        FotoVehiculoDTO dto = new FotoVehiculoDTO()
+                        {
+                            IdVehiculo = modelo.Id,
+                            NombreFoto = nombreArchivo
+                        };
+                        logica.GuardarNombreFoto(dto);
+                        // guardar nombre de archivo en base de datos
+                        ViewBag.UploadFileMessage = "Archivo cargado correctamente.";
+                        ModeloCargaImagenVehiculoGUI modeloView = CrearModeloCargarImagenVehiculo(modelo.Id);
+                        return View(modeloView);
+                    }
+                    catch
+                    {
+
+                    }
                 }
                 ViewBag.UploadFileMessage = "Por favor seleccione al menos un archivo a cargar.";
                 return View();
@@ -180,5 +218,20 @@ namespace Concesionario.GUI.Controllers.Vehiculo
                 return View();
             }
         }
+
+        public ActionResult EliminarFoto(int idFotoVehiculo, string nombreFotoVehiculo)
+        {
+            bool respuesta = logica.EliminarRegistroFoto(idFotoVehiculo);
+            if (respuesta)
+            {
+                string rutaCarpeta = DatosGenerales.RutaArchivosVehiculo;
+                string carpetaEliminados = DatosGenerales.CarpetaFotosVehiculoEliminadas;
+                string rutaOrigenCompletaArchivo = Path.Combine(Server.MapPath(rutaCarpeta), nombreFotoVehiculo);
+                string rutaDestinoCompletaArchivo = Path.Combine(Server.MapPath(rutaCarpeta), carpetaEliminados, nombreFotoVehiculo);
+                System.IO.File.Move(rutaOrigenCompletaArchivo, rutaDestinoCompletaArchivo);
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }

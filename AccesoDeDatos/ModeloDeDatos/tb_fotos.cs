@@ -17,6 +17,7 @@ namespace AccesoDeDatos.ModeloDeDatos
         public int id { get; set; }
         public string ruta { get; set; }
         public int id_vehiculo { get; set; }
+        public bool estado { get; set; }
     
         public virtual tb_vehiculo tb_vehiculo { get; set; }
     }
