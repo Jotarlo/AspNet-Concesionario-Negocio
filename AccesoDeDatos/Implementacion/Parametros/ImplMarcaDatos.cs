@@ -34,6 +34,19 @@ namespace AccesoDeDatos.Implementacion.Parametros
             return lista;
         }
 
+        public IEnumerable<MarcaDbModel> ListarRegistrosReporte()
+        {
+            var lista = new List<MarcaDbModel>();
+            using (ConcesionarioBDEntities bd = new ConcesionarioBDEntities())
+            {
+                //lista = bd.tb_marca.Where(x => x.nombre.Contains(filtro)).Skip(regDescartados).Take(numRegistrosPorPagina).ToList();
+                var listaDatos = (from m in bd.tb_marca
+                                  select m).ToList();
+                 lista = new MapeadorMarcaDatos().MapearTipo1Tipo2(listaDatos).ToList();
+            }
+            return lista;
+        }
+
         /// <summary>
         /// Método para almacenar un registro
         /// </summary>

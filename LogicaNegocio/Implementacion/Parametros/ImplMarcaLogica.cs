@@ -35,6 +35,15 @@ namespace LogicaNegocio.Implementacion.Parametros
             return mapeador.MapearTipo1Tipo2(listado);
         }
 
+        public IEnumerable<MarcaDTO> ListarRegistrosReporte()
+        {
+            //int totalRegistrosLogica = 0;
+            var listado = this.accesoDatos.ListarRegistrosReporte();
+            //totalRegistros = totalRegistrosLogica;
+            MapeadorMarcaLogica mapeador = new MapeadorMarcaLogica();
+            return mapeador.MapearTipo1Tipo2(listado);
+        }
+
         /// <summary>
         /// 
         /// </summary>

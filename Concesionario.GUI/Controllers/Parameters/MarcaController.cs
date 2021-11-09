@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Web.Mvc;
 using Concesionario.GUI.Helpers;
 using Concesionario.GUI.Mapeadores.Parametros;
 using Concesionario.GUI.Models.Parametros;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using LogicaNegocio.DTO.Parametros;
 using LogicaNegocio.Implementacion.Parametros;
 using PagedList;
@@ -142,6 +145,32 @@ namespace Concesionario.GUI.Controllers.Parameters
                 ViewBag.mensaje = Mensajes.mensajeErrorEliminar;
                 ModeloMarcaGUI modelo = mapper.MapearTipo1Tipo2(MarcaDTO);
                 return View(modelo);
+            }
+        }
+
+        public FileStreamResult Print()
+        {
+            DateTime hoy = DateTime.Now;
+            string fecha_creacion = String.Format("{0}_{1}_{2}_{3}", hoy.Day, hoy.Hour, hoy.Minute, hoy.Millisecond);
+            string nombre_archivo = String.Concat("marcas_", fecha_creacion, ".pdf");
+            string ruta = Server.MapPath("~/pdfReports/Marcas/" + nombre_archivo);
+            MapeadorMarcaGUI mapeador = new MapeadorMarcaGUI();
+            IEnumerable<ModeloMarcaGUI> listaDatos = mapeador.MapearTipo1Tipo2(logica.ListarRegistrosReporte());
+            FabricaArchivosPDF fabrica = new FabricaArchivosPDF();
+            bool archivoCreado = fabrica.CrearListadoDeMarcasEnPDF(ruta, "Listado de Marcas", listaDatos);
+
+            if (archivoCreado)
+            {
+                var fileStream = new FileStream(ruta,
+                                    FileMode.Open,
+                                    FileAccess.Read
+                                  );
+                var fsResult = new FileStreamResult(fileStream, "application/pdf");
+                return fsResult;
+            }
+            else
+            {
+                throw new Exception("Error leyendo el archivo");
             }
         }
     }
