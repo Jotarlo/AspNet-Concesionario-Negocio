@@ -52,8 +52,12 @@ namespace LogicaNegocio.Implementacion.Parametros
         public MarcaDTO BuscarRegistro(int id)
         {
             var registro = this.accesoDatos.BuscarRegistro(id);
-            MapeadorMarcaLogica mapeador = new MapeadorMarcaLogica();
-            return mapeador.MapearTipo1Tipo2(registro);
+            if (registro != null)
+            {
+                MapeadorMarcaLogica mapeador = new MapeadorMarcaLogica();
+                return mapeador.MapearTipo1Tipo2(registro);
+            }
+            return null;
         }
 
         public Boolean EditarRegistro(MarcaDTO registro)

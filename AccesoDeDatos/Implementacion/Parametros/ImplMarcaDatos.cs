@@ -86,7 +86,11 @@ namespace AccesoDeDatos.Implementacion.Parametros
             using (ConcesionarioBDEntities bd = new ConcesionarioBDEntities())
             {
                 tb_marca registro = bd.tb_marca.Find(id);
-                return new MapeadorMarcaDatos().MapearTipo1Tipo2(registro);
+                if (registro != null)
+                {
+                    return new MapeadorMarcaDatos().MapearTipo1Tipo2(registro);
+                }
+                return null;
             }
         }
 
